@@ -1,3 +1,11 @@
+from domain.repositories.IERPDataExtractor import IERPDataExtractor
+from domain.repositories.IInventoryLevelRepository import IInventoryLevelRepository
+from domain.repositories.ISyncLogRepository import ISyncLogRepository
+from domain.repositories.IChangeDetector import IChangeDetector
+from domain.repositories.IShopifyUpdater import IShopifyUpdater
+
+from typing import List, Optional, Dict, Any
+from datetime import datetime
 
 class SyncInventoryUseCase:
     """CASO DE USO PRINCIPAL: Sincronizar inventario ERP -> Shopify"""
@@ -5,10 +13,10 @@ class SyncInventoryUseCase:
     def __init__(
         self,
         erp_extractor: IERPDataExtractor,           # Dependencia inyectada
-        inventory_repo: IInventoryRepository,       # Dependencia inyectada
+        inventory_repo: IInventoryLevelRepository,  # Dependencia inyectada
         sync_log_repo: ISyncLogRepository,          # Dependencia inyectada
         change_detector: IChangeDetector,           # Dependencia inyectada
-        shopify_updater: IShopifyUpdater           # Dependencia inyectada
+        shopify_updater: IShopifyUpdater            # Dependencia inyectada
     ):
         # PRINCIPIO DE INVERSIÓN DE DEPENDENCIAS
         # El caso de uso depende de ABSTRACCIONES, no de implementaciones concretas
