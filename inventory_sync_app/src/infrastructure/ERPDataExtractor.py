@@ -4,6 +4,10 @@ from domain.entities.ERPProduct import ERPProduct
 
 from typing import List, Optional, Dict, Any
 from datetime import datetime
+from decimal import Decimal
+
+import aiohttp
+import asyncio
 
 class ERPDataExtractor(IERPDataExtractor):
     """IMPLEMENTACIÓN CONCRETA: Extrae datos de tu endpoint ERP"""

@@ -1,3 +1,12 @@
+from infrastructure.ERPDataExtractor import ERPDataExtractor
+from infrastructure.PostgreSQLInventoryRepository import PostgreSQLInventoryRepository
+from infrastructure.SmartChangeDetector import SmartChangeDetector
+from infrastructure.ShopifyInventoryUpdater import ShopifyInventoryUpdater
+from application.SyncInventoryUseCase import SyncInventoryUseCase
+from infrastructure.PostgreSQLSyncLogRepository import PostgreSQLSyncLogRepository
+
+import asyncio
+
 async def main():
     """COMPOSICIÓN: Aquí se ensambla toda la aplicación"""
     

@@ -5,6 +5,7 @@ from domain.entities.ProductSyncLog import ProductSyncLog
 
 from typing import List, Optional, Dict, Any
 from datetime import datetime
+import asyncio
 
 class ShopifyInventoryUpdater(IShopifyUpdater):
     """IMPLEMENTACIÓN CONCRETA: Actualiza inventario en Shopify"""

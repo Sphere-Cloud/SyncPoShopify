@@ -4,6 +4,7 @@ from domain.entities.CacheInventoryLevel import CacheInventoryLevel
 
 from typing import List, Optional, Dict, Any
 from datetime import datetime
+import asyncpg
 
 class PostgreSQLInventoryRepository(IInventoryLevelRepository):
     """IMPLEMENTACIÓN CONCRETA: PostgreSQL para inventario"""
