@@ -1,0 +1,7 @@
+from abc import ABC, abstractmethod
+
+class ISyncLogRepository(ABC):
+    """Contrato para manejar logs de sincronización"""
+    @abstractmethod
+    async def create_sync_log(self, sync_log: ProductSyncLog) -> int:
+        pass
