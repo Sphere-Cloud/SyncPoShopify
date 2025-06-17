@@ -5,7 +5,7 @@ from typing import List, Optional, Dict, Any
 from enum import Enum
 
 @dataclass
-class ShopifyInventoryLevel:
+class CacheInventoryLevel:
     """Entidad que representa inventario en Shopify (tabla shopify_inventory_level)"""
     inventory_level_id: int
     pos_sku: str

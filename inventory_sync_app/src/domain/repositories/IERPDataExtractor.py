@@ -1,3 +1,6 @@
+from entities.ERPProduct import ERPProduct
+
+from typing import List, Optional, Dict, Any
 from abc import ABC, abstractmethod
 
 class IERPDataExtractor(ABC):

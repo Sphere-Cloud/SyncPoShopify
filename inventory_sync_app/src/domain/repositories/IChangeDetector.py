@@ -1,3 +1,8 @@
+from entities.ERPProduct import ERPProduct
+from entities.CacheInventoryLevel import CacheInventoryLevel
+from entities.InventoryChange import InventoryChange
+
+from typing import List, Optional, Dict, Any
 from abc import ABC, abstractmethod
 
 class IChangeDetector(ABC):
@@ -6,6 +11,6 @@ class IChangeDetector(ABC):
     async def detect_inventory_changes(
         self, 
         erp_products: List[ERPProduct],
-        current_inventory: List[ShopifyInventoryLevel]
+        current_inventory: List[CacheInventoryLevel]
     ) -> List[InventoryChange]:
         pass
