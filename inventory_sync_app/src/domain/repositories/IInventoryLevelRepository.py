@@ -1,4 +1,4 @@
-from entities.CacheInventoryLevel import CacheInventoryLevel
+from domain.entities.CacheInventoryLevel import CacheInventoryLevel
 
 from typing import List, Optional, Dict, Any
 from abc import ABC, abstractmethod

@@ -1,4 +1,4 @@
-from entities.ProductSyncLog import ProductSyncLog
+from domain.entities.ProductSyncLog import ProductSyncLog
 from abc import ABC, abstractmethod
 
 class ISyncLogRepository(ABC):

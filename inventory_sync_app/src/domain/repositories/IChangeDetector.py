@@ -1,6 +1,6 @@
-from entities.ERPProduct import ERPProduct
-from entities.CacheInventoryLevel import CacheInventoryLevel
-from entities.InventoryChange import InventoryChange
+from domain.entities.ERPProduct import ERPProduct
+from domain.entities.CacheInventoryLevel import CacheInventoryLevel
+from domain.entities.InventoryChange import InventoryChange
 
 from typing import List, Optional, Dict, Any
 from abc import ABC, abstractmethod

@@ -1,4 +1,4 @@
-from entities.CacheProduct import CacheProduct
+from domain.entities.CacheProduct import CacheProduct
 
 from typing import List, Optional, Dict, Any
 from abc import ABC, abstractmethod

@@ -36,21 +36,21 @@ class SyncInventoryUseCase:
             erp_products = await self._erp_extractor.extract_products()
             print(f"✅ Extraídos {len(erp_products)} productos del ERP")
             
-            # # PASO 2: Obtener estado actual del inventario (PostgreSQL cache)
-            # print("🔄 Obteniendo inventario actual desde PostgreSQL...")
-            # current_inventory = await self._inventory_repo.get_current_inventory_levels()
-            # print(f"✅ Inventario actual: {len(current_inventory)} registros")
+            # PASO 2: Obtener estado actual del inventario (PostgreSQL cache)
+            print("🔄 Obteniendo inventario actual desde PostgreSQL...")
+            current_inventory = await self._inventory_repo.get_current_inventory_levels()
+            print(f"✅ Inventario actual: {len(current_inventory)} registros")
             
-            # # PASO 3: Detectar cambios (lógica de dominio)
-            # print("🔄 Detectando cambios de inventario...")
-            # changes = await self._change_detector.detect_inventory_changes(
-            #     erp_products, current_inventory
-            # )
-            # print(f"✅ Detectados {len(changes)} cambios")
+            # PASO 3: Detectar cambios (lógica de dominio)
+            print("🔄 Detectando cambios de inventario...")
+            changes = await self._change_detector.detect_inventory_changes(
+                erp_products, current_inventory
+            )
+            print(f"✅ Detectados {len(changes)} cambios")
             
-            # # PASO 4: Filtrar cambios que valen la pena (reglas de negocio)
-            # worthy_changes = [change for change in changes if change.is_worth_updating()]
-            # print(f"✅ Cambios que valen la pena actualizar: {len(worthy_changes)}")
+            # PASO 4: Filtrar cambios que valen la pena (reglas de negocio)
+            worthy_changes = [change for change in changes if change.is_worth_updating()]
+            print(f"✅ Cambios que valen la pena actualizar: {len(worthy_changes)}")
             
             # # PASO 5: Actualizar Shopify (con rate limiting)
             # if worthy_changes:
@@ -82,6 +82,8 @@ class SyncInventoryUseCase:
                 "status": "SUCCESS",
                 "operation_time_seconds": operation_time,
                 "erp_products_extracted": len(erp_products),
+                "changes_detected": len(changes),
+                "worthy_changes": len(worthy_changes)
             }
             
         except Exception as e:

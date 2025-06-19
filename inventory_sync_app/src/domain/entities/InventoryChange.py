@@ -9,8 +9,8 @@ class InventoryChange:
     """Entidad que representa un cambio de inventario detectado"""
     sku: str
     location_name: str
-    old_quantity: int
-    new_quantity: int
+    old_quantity: float
+    new_quantity: float
     priority: int = 3  # 1=crítico, 2=alto, 3=normal
     estimated_cost: Decimal = Decimal('0.01')
     
@@ -20,4 +20,4 @@ class InventoryChange:
     
     def is_worth_updating(self) -> bool:
         """Regla de negocio: ¿Vale la pena gastar en este update?"""
-        return abs(self.get_quantity_delta()) >= 5 or self.priority <= 2
+        return abs(self.get_quantity_delta()) > 0 or self.priority <= 3

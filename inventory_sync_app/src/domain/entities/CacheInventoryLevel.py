@@ -14,9 +14,9 @@ class CacheInventoryLevel:
     quantities_available: int
     updated_at: datetime
     
-    def needs_inventory_update(self, new_quantity: int, threshold: int = 5) -> bool:
+    def needs_inventory_update(self, new_quantity: int, threshold: int = 0) -> bool:
         """Regla de negocio: ¿Vale la pena actualizar? (optimización de costos)"""
-        return abs(self.quantities_available - new_quantity) >= threshold
+        return abs(self.quantities_available - new_quantity) > threshold
     
     def is_critical_change(self, new_quantity: int) -> bool:
         """Regla de negocio: ¿Es un cambio crítico? (stock out/in)"""

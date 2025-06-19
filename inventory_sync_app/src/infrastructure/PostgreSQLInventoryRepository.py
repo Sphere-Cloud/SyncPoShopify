@@ -26,9 +26,10 @@ class PostgreSQLInventoryRepository(IInventoryLevelRepository):
                     shopify_inventory_level_gid=row['shopify_inventory_level_gid'],
                     location_name=row['location_name'],
                     quantities_available=row['quantities_available'],
-                    updated_at=row['upadated_at']  # Tu typo en la DB
+                    updated_at=row['updated_at']  # Tu typo en la DB
                 )
                 inventory_levels.append(inventory_level)
+                print(f"Producto Cache: {inventory_level.pos_sku} - {inventory_level.quantities_available}")
             
             return inventory_levels
         finally:
@@ -40,9 +41,9 @@ class PostgreSQLInventoryRepository(IInventoryLevelRepository):
         try:
             await conn.execute("""
                 UPDATE shopify_inventory_level 
-                SET quantities_available = $1, upadated_at = $2
+                SET quantities_available = $1,
                 WHERE pos_sku = $3 AND location_name = $4
-            """, inventory.quantities_available, datetime.now(), 
+            """, inventory.quantities_available, 
                 inventory.pos_sku, inventory.location_name)
         finally:
             await conn.close()

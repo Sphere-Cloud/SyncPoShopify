@@ -12,15 +12,15 @@ async def main():
     
     # 1. CREAR IMPLEMENTACIONES CONCRETAS (INFRASTRUCTURE)
     erp_extractor = ERPDataExtractor(
-        endpoint_url="https://tu-erp-endpoint.com/api/productos"
+        endpoint_url="http://beadcolors.myvnc.com/WSCatalogoPS/WSCatalogoPS/api/Articulos"
     )
     
     inventory_repo = PostgreSQLInventoryRepository(
-        connection_string="postgresql://user:pass@localhost/tu_db"
+        connection_string="postgresql://postgres:12345@localhost/POS_SYNC_SHOPI"
     )
     
     sync_log_repo = PostgreSQLSyncLogRepository(  # No implementé esta clase por brevedad
-        connection_string="postgresql://user:pass@localhost/tu_db"
+        connection_string="postgresql://postgres:12345@localhost/POS_SYNC_SHOPI"
     )
     
     change_detector = SmartChangeDetector()

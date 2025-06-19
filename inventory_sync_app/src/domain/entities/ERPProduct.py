@@ -12,7 +12,7 @@ class ERPProduct:
     unidad: str
     precio: Decimal
     precio_con_imp: Decimal
-    existencia: int
+    existencia: float
     grupo2: Optional[str] = None
     desc_grupo2: Optional[str] = None
     agrupacion2: Optional[str] = None
@@ -21,7 +21,7 @@ class ERPProduct:
     
     def has_inventory(self) -> bool:
         """Regla de negocio: ¿Tiene inventario disponible?"""
-        return self.existencia > 0
+        return self.existencia > 0.0
     
     def get_category(self) -> str:
         """Regla de negocio: Obtener categoría limpia"""
