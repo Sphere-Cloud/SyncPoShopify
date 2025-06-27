@@ -49,23 +49,40 @@ class SyncInventoryUseCase:
             print(f"✅ Detectados {len(changes)} cambios")
             
             # PASO 4: Filtrar cambios que valen la pena (reglas de negocio)
-            worthy_changes = [change for change in changes if change.is_worth_updating()]
-            print(f"✅ Cambios que valen la pena actualizar: {len(worthy_changes)}")
+            # worthy_changes = [change for change in changes if change.is_worth_updating()]
+            # print(f"✅ Cambios que valen la pena actualizar: {len(worthy_changes)}")
+
+            to_create = [change for change in changes if change.is_new_product()]
+            to_update = [change for change in changes if change.should_update()]
+
+            print(f"Se van a actualizar {len(to_update)} productos")
+            print(f"Se van a crear {len(to_create)} productos")
+
             
-            # # PASO 5: Actualizar Shopify (con rate limiting)
-            # if worthy_changes:
-            #     print("🔄 Actualizando inventario en Shopify...")
-            #     sync_results = await self._shopify_updater.update_inventory_batch(worthy_changes)
+            # PASO 5: Actualizar Shopify (con rate limiting)
+            if to_create or to_update:
+                print("🔄 Actualizando inventario en Shopify...")
+                [sync_results_to_update, sync_update_db_to_update] = await self._shopify_updater.update_inventory_batch(to_update)
+                [sync_results_to_create, sync_update_db_to_create] = await self._shopify_updater.create_inventory_batch(to_create)
+
+
+                sync_db_results_to_update = await self._inventory_repo.update_inventory_level(sync_update_db_to_update)
+                sync_db_results_to_create = await self._inventory_repo.products_created_on_shopify(sync_update_db_to_create)
+               
+                # PASO 6: Guardar logs de sincronización
+                save_logs_to_update = await self._sync_log_repo.create_sync_logs(sync_results_to_update)
+                save_logs_to_create = await self._sync_log_repo.create_sync_logs(sync_results_to_create)
                 
-            #     # PASO 6: Guardar logs de sincronización
-            #     for sync_result in sync_results:
-            #         await self._sync_log_repo.create_sync_log(sync_result)
+                successful_updates = [r for r in sync_results_to_update if r.was_successful()]
+                successful_creates = [r for r in sync_results_to_create if r.was_successful()]
+
                 
-            #     successful_updates = [r for r in sync_results if r.was_successful()]
-            #     print(f"✅ Actualizaciones exitosas: {len(successful_updates)}/{len(sync_results)}")
-            # else:
-            #     print("ℹ️ No hay cambios significativos para actualizar")
-            #     sync_results = []
+                #print(sync_db_results)
+                print(f"✅ Actualizaciones exitosas: {len(successful_updates)}/{len(sync_results_to_update)}")
+                print(f"✅ Creaciones exitosas: {len(successful_creates)}/{len(sync_results_to_create)}")
+            else:
+                print("ℹ️ No hay cambios significativos para actualizar")
+                sync_results = []
             
             # # Resultado final
             operation_time = (datetime.now() - operation_start).total_seconds()
@@ -83,7 +100,7 @@ class SyncInventoryUseCase:
                 "operation_time_seconds": operation_time,
                 "erp_products_extracted": len(erp_products),
                 "changes_detected": len(changes),
-                "worthy_changes": len(worthy_changes)
+                "worthy_changes": len(changes)
             }
             
         except Exception as e:

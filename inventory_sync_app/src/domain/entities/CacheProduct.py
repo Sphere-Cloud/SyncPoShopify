@@ -13,10 +13,10 @@ class CacheProduct:
     title: str
     description: str
     category: str
-    status: str
+    sync_op: str
     shopify_product_gid: str
     shopify_variant_gid: str
-    inventory_item_gid: str
+    shopify_inventory_item_gid: str
     created_at: datetime
     updated_at: datetime
     

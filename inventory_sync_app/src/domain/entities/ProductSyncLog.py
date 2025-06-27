@@ -10,8 +10,8 @@ class ProductSyncLog:
     sync_id: int
     sku_pos: str
     sync_info: str
-    before_sync: int
-    after_sync: int
+    before_sync: float
+    after_sync: float
     synced_at: datetime
     synced_status: str
     sync_type: str

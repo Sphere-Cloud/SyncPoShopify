@@ -26,8 +26,8 @@ async def main():
     change_detector = SmartChangeDetector()
     
     shopify_updater = ShopifyInventoryUpdater(
-        shop_url="https://tu-tienda.myshopify.com",
-        access_token="tu-access-token"
+        shop_url="",
+        access_token=""
     )
     
     # 2. INYECTAR DEPENDENCIAS EN EL CASO DE USO (APPLICATION)

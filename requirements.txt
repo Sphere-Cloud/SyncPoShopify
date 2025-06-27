@@ -5,6 +5,7 @@ httpx==0.25.0
 # Async support
 asyncio==3.4.3
 aiohttp==3.8.6
+asyncpg==0.30.0
 
 # Database
 psycopg2-binary==2.9.7
