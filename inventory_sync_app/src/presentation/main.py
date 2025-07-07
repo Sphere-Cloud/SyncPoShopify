@@ -5,29 +5,38 @@ from infrastructure.ShopifyInventoryUpdater import ShopifyInventoryUpdater
 from application.SyncInventoryUseCase import SyncInventoryUseCase
 from infrastructure.PostgreSQLSyncLogRepository import PostgreSQLSyncLogRepository
 
+from shared.config.config_manager import ApplicationConfig, get_config
+from shared.logging.logging_setup import setup_logging
+
 import asyncio
 
-async def main():
+async def main(config: ApplicationConfig = None):
     """COMPOSICIÓN: Aquí se ensambla toda la aplicación"""
+    
+    if config is None:
+        config = get_config()
+
+
     
     # 1. CREAR IMPLEMENTACIONES CONCRETAS (INFRASTRUCTURE)
     erp_extractor = ERPDataExtractor(
-        endpoint_url="http://beadcolors.myvnc.com/WSCatalogoPS/WSCatalogoPS/api/Articulos"
+        endpoint_url=config.erp.endpoint_url,
+        bearer_token=config.erp.api_key
     )
     
     inventory_repo = PostgreSQLInventoryRepository(
-        connection_string="postgresql://postgres:12345@localhost/POS_SYNC_SHOPI"
+        connection_string=f"postgresql://{config.database.user}:{config.database.password}@{config.database.host}/{config.database.name}"
     )
     
     sync_log_repo = PostgreSQLSyncLogRepository(  # No implementé esta clase por brevedad
-        connection_string="postgresql://postgres:12345@localhost/POS_SYNC_SHOPI"
+        connection_string=f"postgresql://{config.database.user}:{config.database.password}@{config.database.host}/{config.database.name}"
     )
     
     change_detector = SmartChangeDetector()
     
     shopify_updater = ShopifyInventoryUpdater(
-        shop_url="",
-        access_token=""
+        shop_url=config.shopify.shop_domain,
+        access_token=config.shopify.access_token
     )
     
     # 2. INYECTAR DEPENDENCIAS EN EL CASO DE USO (APPLICATION)

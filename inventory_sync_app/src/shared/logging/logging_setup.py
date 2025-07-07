@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import Dict, Any, Optional
 from pathlib import Path
 
-from config.config_manager import get_config, LogLevel
+from src.shared.config.config_manager import get_config, LogLevel
 
 
 class JSONFormatter(logging.Formatter):

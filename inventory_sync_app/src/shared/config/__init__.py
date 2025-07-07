@@ -8,10 +8,8 @@ Módulo de configuración centralizada
 from .config_manager import (
     ApplicationConfig,
     DatabaseConfig,
-    RedisConfig,
     ERPConfig,
     ShopifyConfig,
-    SyncConfig,
     LoggingConfig,
     get_config,
     reload_config,

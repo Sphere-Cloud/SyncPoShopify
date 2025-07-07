@@ -35,13 +35,15 @@ class SyncInventoryUseCase:
             print("🔄 Extrayendo productos del ERP...")
             erp_products = await self._erp_extractor.extract_products()
             print(f"✅ Extraídos {len(erp_products)} productos del ERP")
+
+            #print(erp_products)
             
-            # PASO 2: Obtener estado actual del inventario (PostgreSQL cache)
+            # # PASO 2: Obtener estado actual del inventario (PostgreSQL cache)
             print("🔄 Obteniendo inventario actual desde PostgreSQL...")
             current_inventory = await self._inventory_repo.get_current_inventory_levels()
             print(f"✅ Inventario actual: {len(current_inventory)} registros")
             
-            # PASO 3: Detectar cambios (lógica de dominio)
+            # # PASO 3: Detectar cambios (lógica de dominio)
             print("🔄 Detectando cambios de inventario...")
             changes = await self._change_detector.detect_inventory_changes(
                 erp_products, current_inventory
@@ -59,7 +61,7 @@ class SyncInventoryUseCase:
             print(f"Se van a crear {len(to_create)} productos")
 
             
-            # PASO 5: Actualizar Shopify (con rate limiting)
+            #PASO 5: Actualizar Shopify (con rate limiting)
             if to_create or to_update:
                 print("🔄 Actualizando inventario en Shopify...")
                 [sync_results_to_update, sync_update_db_to_update] = await self._shopify_updater.update_inventory_batch(to_update)
@@ -84,7 +86,7 @@ class SyncInventoryUseCase:
                 print("ℹ️ No hay cambios significativos para actualizar")
                 sync_results = []
             
-            # # Resultado final
+            # # # Resultado final
             operation_time = (datetime.now() - operation_start).total_seconds()
             # return {
             #     "status": "SUCCESS",

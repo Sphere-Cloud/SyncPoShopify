@@ -4,8 +4,9 @@ Ubicación: src/shared/config/config_manager.py
 """
 
 import os
-from typing import Optional, List
-from pydantic import BaseSettings, validator, Field
+from typing import Optional
+from pydantic import field_validator, Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from enum import Enum
 
 
@@ -27,133 +28,182 @@ class LogLevel(str, Enum):
 
 class DatabaseConfig(BaseSettings):
     """Configuración de base de datos"""
-    host: str = Field(..., env="DB_HOST")
-    port: int = Field(5432, env="DB_PORT")
-    name: str = Field(..., env="DB_NAME")
-    user: str = Field(..., env="DB_USER")
-    password: str = Field(..., env="DB_PASSWORD")
-    pool_size: int = Field(10, env="DB_POOL_SIZE")
-    max_overflow: int = Field(20, env="DB_MAX_OVERFLOW")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore"
+    )
+    
+    host: str = Field(..., description="Host de la base de datos")
+    port: int = Field(5432, description="Puerto de la base de datos")
+    name: str = Field(..., description="Nombre de la base de datos")
+    user: str = Field(..., description="Usuario de la base de datos")
+    password: str = Field(..., description="Contraseña de la base de datos")
     
     @property
     def database_url(self) -> str:
         """Construye la URL de conexión a la base de datos"""
-        return f"postgresql://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}"
-
-
-class RedisConfig(BaseSettings):
-    """Configuración de Redis/Cache"""
-    host: str = Field("localhost", env="REDIS_HOST")
-    port: int = Field(6379, env="REDIS_PORT")
-    password: Optional[str] = Field(None, env="REDIS_PASSWORD")
-    db: int = Field(0, env="REDIS_DB")
-    max_connections: int = Field(20, env="REDIS_MAX_CONNECTIONS")
-    
-    # TTL específicos para tu aplicación
-    erp_data_ttl: int = Field(12, env="ERP_DATA_TTL_SECONDS")  # 12 segundos como mencionaste
-    inventory_cache_ttl: int = Field(3600, env="INVENTORY_CACHE_TTL")  # 1 hora
+        return f"postgresql://{self.user}:{self.password}@{self.host}/{self.name}"
 
 
 class ERPConfig(BaseSettings):
     """Configuración del ERP"""
-    endpoint_url: str = Field(..., env="ERP_ENDPOINT_URL")
-    api_key: Optional[str] = Field(None, env="ERP_API_KEY")
-    username: Optional[str] = Field(None, env="ERP_USERNAME")
-    password: Optional[str] = Field(None, env="ERP_PASSWORD")
-    timeout_seconds: int = Field(15, env="ERP_TIMEOUT_SECONDS")  # 15 seg (3 más que los 12 típicos)
-    max_retries: int = Field(3, env="ERP_MAX_RETRIES")
-    retry_delay: int = Field(5, env="ERP_RETRY_DELAY_SECONDS")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore"
+    )
+    
+    endpoint_url: str = Field(..., description="URL del endpoint del ERP")
+    api_key: Optional[str] = Field(None, description="API Key del ERP")
 
 
 class ShopifyConfig(BaseSettings):
     """Configuración de Shopify"""
-    api_key: str = Field(..., env="SHOPIFY_API_KEY")
-    api_secret: str = Field(..., env="SHOPIFY_API_SECRET")
-    access_token: str = Field(..., env="SHOPIFY_ACCESS_TOKEN")
-    shop_domain: str = Field(..., env="SHOPIFY_SHOP_DOMAIN")  # tu-tienda.myshopify.com
-    api_version: str = Field("2024-01", env="SHOPIFY_API_VERSION")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore"
+    )
     
-    # Rate limiting settings
-    max_requests_per_second: int = Field(35, env="SHOPIFY_MAX_RPS")  # 35 de 40 para margen
-    max_burst_requests: int = Field(80, env="SHOPIFY_MAX_BURST")
-    backoff_factor: float = Field(1.5, env="SHOPIFY_BACKOFF_FACTOR")
-    max_backoff_seconds: int = Field(300, env="SHOPIFY_MAX_BACKOFF")  # 5 minutos máximo
-
-
-class SyncConfig(BaseSettings):
-    """Configuración específica del proceso de sincronización"""
-    batch_size: int = Field(100, env="SYNC_BATCH_SIZE")  # Registros por lote
-    change_threshold_percentage: float = Field(5.0, env="SYNC_CHANGE_THRESHOLD")  # 5% mínimo cambio
-    change_threshold_units: int = Field(10, env="SYNC_CHANGE_THRESHOLD_UNITS")  # 10 unidades mínimo
-    max_parallel_batches: int = Field(3, env="SYNC_MAX_PARALLEL_BATCHES")
-    
-    # Horarios de sincronización
-    daily_sync_hour: int = Field(2, env="SYNC_DAILY_HOUR")  # 2:00 AM como mencionaste
-    daily_sync_minute: int = Field(0, env="SYNC_DAILY_MINUTE")
-    
-    # Configuración de reintentos
-    max_sync_retries: int = Field(3, env="SYNC_MAX_RETRIES")
-    retry_delay_minutes: int = Field(30, env="SYNC_RETRY_DELAY_MINUTES")
+    access_token: str = Field(..., description="Token de acceso de Shopify")
+    shop_domain: str = Field(..., description="Dominio de la tienda Shopify")
 
 
 class LoggingConfig(BaseSettings):
     """Configuración del sistema de logging"""
-    level: LogLevel = Field(LogLevel.INFO, env="LOG_LEVEL")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore"
+    )
+    
+    level: LogLevel = Field(LogLevel.INFO, description="Nivel de logging general")
     format: str = Field(
         "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        env="LOG_FORMAT"
+        description="Formato del log"
     )
-    json_format: bool = Field(True, env="LOG_JSON_FORMAT")
+    json_format: bool = Field(True, description="Usar formato JSON para logs")
     
     # Archivos de log
-    log_dir: str = Field("logs", env="LOG_DIR")
-    log_filename: str = Field("inventory_sync.log", env="LOG_FILENAME")
-    max_file_size_mb: int = Field(50, env="LOG_MAX_FILE_SIZE_MB")
-    backup_count: int = Field(5, env="LOG_BACKUP_COUNT")
+    log_dir: str = Field("logs", description="Directorio para archivos de log")
+    log_filename: str = Field("inventory_sync.log", description="Nombre del archivo de log")
+    max_file_size_mb: int = Field(50, description="Tamaño máximo del archivo de log en MB")
+    backup_count: int = Field(5, description="Número de archivos de backup")
     
     # Logging específico por componente
-    erp_log_level: LogLevel = Field(LogLevel.INFO, env="ERP_LOG_LEVEL")
-    shopify_log_level: LogLevel = Field(LogLevel.INFO, env="SHOPIFY_LOG_LEVEL")
-    database_log_level: LogLevel = Field(LogLevel.WARNING, env="DB_LOG_LEVEL")
+    erp_log_level: LogLevel = Field(LogLevel.INFO, description="Nivel de log para ERP")
+    shopify_log_level: LogLevel = Field(LogLevel.INFO, description="Nivel de log para Shopify")
+    database_log_level: LogLevel = Field(LogLevel.WARNING, description="Nivel de log para base de datos")
 
 
 class ApplicationConfig(BaseSettings):
     """Configuración principal de la aplicación"""
-    app_name: str = Field("Inventory Sync App", env="APP_NAME")
-    app_version: str = Field("1.0.0", env="APP_VERSION")
-    environment: Environment = Field(Environment.DEVELOPMENT, env="ENVIRONMENT")
-    debug: bool = Field(False, env="DEBUG")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore"
+    )
     
-    # Configuraciones anidadas
-    database: DatabaseConfig = DatabaseConfig()
-    redis: RedisConfig = RedisConfig()
-    erp: ERPConfig = ERPConfig()
-    shopify: ShopifyConfig = ShopifyConfig()
-    sync: SyncConfig = SyncConfig()
-    logging: LoggingConfig = LoggingConfig()
+    app_name: str = Field("Inventory Sync App", description="Nombre de la aplicación")
+    app_version: str = Field("1.0.0", description="Versión de la aplicación")
+    environment: Environment = Field(Environment.DEVELOPMENT, description="Ambiente de ejecución")
+    debug: bool = Field(False, description="Modo debug")
     
-    # Configuración de monitoreo
-    enable_metrics: bool = Field(True, env="ENABLE_METRICS")
-    metrics_port: int = Field(8080, env="METRICS_PORT")
+    # Variables de entorno para cada configuración
+    # Database
+    db_host: str = Field(..., alias="DB_HOST")
+    db_port: int = Field(5432, alias="DB_PORT")
+    db_name: str = Field(..., alias="DB_NAME")
+    db_user: str = Field(..., alias="DB_USER")
+    db_password: str = Field(..., alias="DB_PASSWORD")
     
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        case_sensitive = False
+    # ERP
+    erp_endpoint_url: str = Field(..., alias="ERP_ENDPOINT_URL")
+    erp_api_key: Optional[str] = Field(None, alias="ERP_API_KEY")
     
-    @validator("environment")
+    # Shopify
+    shopify_access_token: str = Field(..., alias="SHOPIFY_ACCESS_TOKEN")
+    shopify_shop_domain: str = Field(..., alias="SHOPIFY_SHOP_DOMAIN")
+    
+    # Logging
+    log_level: LogLevel = Field(LogLevel.INFO, alias="LOG_LEVEL")
+    log_format: str = Field(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        alias="LOG_FORMAT"
+    )
+    log_json_format: bool = Field(True, alias="LOG_JSON_FORMAT")
+    log_dir: str = Field("logs", alias="LOG_DIR")
+    log_filename: str = Field("inventory_sync.log", alias="LOG_FILENAME")
+    log_max_file_size_mb: int = Field(50, alias="LOG_MAX_FILE_SIZE_MB")
+    log_backup_count: int = Field(5, alias="LOG_BACKUP_COUNT")
+    erp_log_level: LogLevel = Field(LogLevel.INFO, alias="ERP_LOG_LEVEL")
+    shopify_log_level: LogLevel = Field(LogLevel.INFO, alias="SHOPIFY_LOG_LEVEL")
+    database_log_level: LogLevel = Field(LogLevel.WARNING, alias="DB_LOG_LEVEL")
+    
+    @field_validator("environment")
+    @classmethod
     def validate_environment(cls, v):
         """Valida que el ambiente sea válido"""
-        if v not in Environment:
-            raise ValueError(f"Environment must be one of: {list(Environment)}")
+        if v not in [env.value for env in Environment]:
+            raise ValueError(f"Environment must be one of: {[env.value for env in Environment]}")
         return v
     
-    @validator("debug")
-    def set_debug_based_on_env(cls, v, values):
+    @field_validator("debug")
+    @classmethod
+    def set_debug_based_on_env(cls, v, info):
         """Activa debug automáticamente en development"""
-        if values.get("environment") == Environment.DEVELOPMENT:
+        if info.data.get("environment") == Environment.DEVELOPMENT:
             return True
         return v
+    
+    @property
+    def database(self) -> DatabaseConfig:
+        """Configuración de base de datos"""
+        return DatabaseConfig(
+            host=self.db_host,
+            port=self.db_port,
+            name=self.db_name,
+            user=self.db_user,
+            password=self.db_password
+        )
+    
+    @property
+    def erp(self) -> ERPConfig:
+        """Configuración del ERP"""
+        return ERPConfig(
+            endpoint_url=self.erp_endpoint_url,
+            api_key=self.erp_api_key
+        )
+    
+    @property
+    def shopify(self) -> ShopifyConfig:
+        """Configuración de Shopify"""
+        return ShopifyConfig(
+            access_token=self.shopify_access_token,
+            shop_domain=self.shopify_shop_domain
+        )
+    
+    @property
+    def logging(self) -> LoggingConfig:
+        """Configuración de logging"""
+        return LoggingConfig(
+            level=self.log_level,
+            format=self.log_format,
+            json_format=self.log_json_format,
+            log_dir=self.log_dir,
+            log_filename=self.log_filename,
+            max_file_size_mb=self.log_max_file_size_mb,
+            backup_count=self.log_backup_count,
+            erp_log_level=self.erp_log_level,
+            shopify_log_level=self.shopify_log_level,
+            database_log_level=self.database_log_level
+        )
 
 
 # Instancia global de configuración
@@ -176,3 +226,20 @@ def reload_config() -> ApplicationConfig:
     global config
     config = ApplicationConfig()
     return config
+
+
+def print_config_status():
+    """
+    Función de debug para verificar qué variables se están cargando
+    """
+    print("=== CONFIGURACIÓN ACTUAL ===")
+    # print(f"Environment: {config.environment}")
+    # print(f"Debug: {config.debug}")
+    # print(f"DB Host: {config.db_host}")
+    # print(f"ERP Endpoint: {config.erp_endpoint_url}")
+    # print(f"Shopify Domain: {config.shopify_shop_domain}")
+    # print(f"Log Level: {config.log_level}")
+    print(config.shopify.access_token, config.shopify.shop_domain)
+    print(config.erp)
+    print(config.database)
+    print("==========================")

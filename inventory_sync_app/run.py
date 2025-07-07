@@ -6,7 +6,12 @@ import asyncio
 # Agregar src al path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-from presentation.main import main
+from src.presentation.main import main
+from src.shared.config.config_manager import get_config, print_config_status
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    config = get_config()
+
+    #print_config_status()
+
+    asyncio.run(main(config=config))

@@ -140,7 +140,7 @@ class ShopifyInventoryUpdater(IShopifyUpdater):
                         "quantities": [{
                             "inventoryItemId": change.shopify_inventory_item,  
                             "locationId": change.shopify_location_gid,  
-                            "quantity": change.new_quantity  
+                            "quantity": int(change.new_quantity)  
                         }]
                     }
                 }
@@ -159,6 +159,7 @@ class ShopifyInventoryUpdater(IShopifyUpdater):
                     
                     data = await response.json()
                     
+                    print("Update Data: ", data)
                     
                     if 'errors' in data:
                         raise Exception(f"GraphQL errors: {data['errors']}")
@@ -205,7 +206,7 @@ class ShopifyInventoryUpdater(IShopifyUpdater):
                         raise Exception(f"Create Product failed: {response.status} - {response.reason}")
                     
                     data = await response.json()
-                    #print("Create:", data)
+                    print("Create:", data)
                     
                     if 'errors' in data:
                         raise Exception(f"GraphQL errors: {data['errors']}")
@@ -237,7 +238,7 @@ class ShopifyInventoryUpdater(IShopifyUpdater):
                         raise Exception(f"Update Inventory tracking failed: {response.status} - {response.reason}")
                     
                     data = await response.json()
-                    #print("Activate Variant Info:", data)
+                    print("Activate Variant Info:", data)
                     if 'errors' in data:
                         raise Exception(f"GraphQL errors: {data['errors']}")
 
@@ -257,7 +258,7 @@ class ShopifyInventoryUpdater(IShopifyUpdater):
                         raise Exception(f"Activate Inventory failed: {response.status} - {response.reason}")
                     
                     data = await response.json()
-                    #print("Activate Location: ", data)
+                    print("Activate Location: ", data)
                     if 'errors' in data:
                         raise Exception(f"GraphQL errors: {data['errors']}")
                     
@@ -286,7 +287,7 @@ class ShopifyInventoryUpdater(IShopifyUpdater):
                         raise Exception(f"Inventory Set failed: {response.status} - {response.reason}")
                     
                     data = await response.json()
-                    #print("Update Quantities", data)
+                    print("Update Quantities", data)
                     if 'errors' in data:
                         raise Exception(f"GraphQL errors: {data['errors']}")
                     

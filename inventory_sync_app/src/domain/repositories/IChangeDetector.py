@@ -1,4 +1,4 @@
-from domain.entities.ERPProduct import ERPProduct
+from domain.entities.KordataProduct import KordataProduct
 from domain.entities.CacheInventoryLevel import CacheInventoryLevel
 from domain.entities.InventoryChange import InventoryChange
 
@@ -10,7 +10,7 @@ class IChangeDetector(ABC):
     @abstractmethod
     async def detect_inventory_changes(
         self, 
-        erp_products: List[ERPProduct],
+        erp_products: List[KordataProduct],
         current_inventory: List[CacheInventoryLevel]
     ) -> List[InventoryChange]:
         pass

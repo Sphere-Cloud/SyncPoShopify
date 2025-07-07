@@ -1,4 +1,4 @@
-from ERPProduct import ERPProduct
+from KordataProduct import KordataProduct
 
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -24,7 +24,7 @@ class CacheProduct:
         """Regla de negocio: ¿Está activo en Shopify?"""
         return self.status == "active"
     
-    def needs_update_from_erp(self, erp_product: ERPProduct) -> bool:
+    def needs_update_from_erp(self, erp_product: KordataProduct) -> bool:
         """Regla de negocio: ¿Necesita actualización desde ERP?"""
         return (
             self.title != erp_product.descripcion or

@@ -25,6 +25,7 @@ class CacheInventoryLevel:
     
     def should_update(self, new_quantity: float, threshold: int = 0) -> bool:
         """Regla de negocio: ¿Vale la pena actualizar? (optimización de costos)"""
+        print(f"Should update {abs(self.quantities_available - math.ceil(new_quantity))}")
         return (abs(self.quantities_available - math.ceil(new_quantity)) > threshold) and self.sync_op == "UPDATE"   
 
     def is_new_product(self) -> bool:

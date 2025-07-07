@@ -53,7 +53,7 @@ class PostgreSQLInventoryRepository(IInventoryLevelRepository):
                     title=row['title']
                 )
                 inventory_levels.append(inventory_level)
-                print(f"Producto Cache: {inventory_level.pos_sku} - {inventory_level.quantities_available}")
+                #print(f"Producto Cache: {inventory_level.pos_sku} - {inventory_level.id_location} - {inventory_level.shopify_location_gid}")
             
             return inventory_levels
         finally:
