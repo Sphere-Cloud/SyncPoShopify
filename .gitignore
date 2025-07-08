@@ -60,4 +60,5 @@ coverage.xml
 
 
 # Others
-/data_examples
+/data_examples/
+*shopify_products_*

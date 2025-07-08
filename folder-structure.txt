@@ -1,0 +1,105 @@
+Listado de rutas de carpetas
+El n£mero de serie del volumen es 5280-EBCD
+C:.
+³   .env
+³   .gitignore
+³   CleanArchitecture.png
+³   Data_Flow.jpg
+³   data_import.log
+³   folder-structure.txt
+³   helper_filter_products.py
+³   helper_load_products.py
+³   pyproject.toml
+³   README.me
+³   requirements-dev.txt
+³   requirements.txt
+³   REVRSE ERP - SYNC POS V2.jpeg
+³   schemas_db.sql
+³   
+ÃÄÄÄdata_examples
+³       data.json
+³       filtered_data.csv
+³       filtered_data.json
+³       fixoem_products.json
+³       inventoryRetrieve.json
+³       locations.json
+³       
+ÀÄÄÄinventory_sync_app
+    ³   run.py
+    ³   
+    ÃÄÄÄdocker
+    ÃÄÄÄdocs
+    ÃÄÄÄscripts
+    ÃÄÄÄsrc
+    ³   ³   __init__.py
+    ³   ³   
+    ³   ÃÄÄÄapplication
+    ³   ³   ³   SyncInventoryUseCase.py
+    ³   ³   ³   
+    ³   ³   ÀÄÄÄ__pycache__
+    ³   ³           SyncInventoryUseCase.cpython-310.pyc
+    ³   ³           
+    ³   ÃÄÄÄdomain
+    ³   ³   ÃÄÄÄentities
+    ³   ³   ³   ³   CacheInventoryLevel.py
+    ³   ³   ³   ³   CacheProduct.py
+    ³   ³   ³   ³   ERPProduct.py
+    ³   ³   ³   ³   InventoryChange.py
+    ³   ³   ³   ³   KordataProduct.py
+    ³   ³   ³   ³   ProductSyncLog.py
+    ³   ³   ³   ³   
+    ³   ³   ³   ÀÄÄÄ__pycache__
+    ³   ³   ³           CacheInventoryLevel.cpython-310.pyc
+    ³   ³   ³           ERPProduct.cpython-310.pyc
+    ³   ³   ³           InventoryChange.cpython-310.pyc
+    ³   ³   ³           ProductSyncLog.cpython-310.pyc
+    ³   ³   ³           
+    ³   ³   ÀÄÄÄrepositories
+    ³   ³       ³   IChangeDetector.py
+    ³   ³       ³   IERPDataExtractor.py
+    ³   ³       ³   IInventoryLevelRepository.py
+    ³   ³       ³   IKordataDataExtractor.py
+    ³   ³       ³   IProductRepository.py
+    ³   ³       ³   IShopifyUpdater.py
+    ³   ³       ³   ISyncLogRepository.py
+    ³   ³       ³   
+    ³   ³       ÀÄÄÄ__pycache__
+    ³   ³               IChangeDetector.cpython-310.pyc
+    ³   ³               IERPDataExtractor.cpython-310.pyc
+    ³   ³               IInventoryLevelRepository.cpython-310.pyc
+    ³   ³               IShopifyUpdater.cpython-310.pyc
+    ³   ³               ISyncLogRepository.cpython-310.pyc
+    ³   ³               
+    ³   ÃÄÄÄinfrastructure
+    ³   ³   ³   ERPDataExtractor.py
+    ³   ³   ³   PostgreSQLInventoryRepository.py
+    ³   ³   ³   PostgreSQLSyncLogRepository.py
+    ³   ³   ³   ShopifyInventoryUpdater.py
+    ³   ³   ³   SmartChangeDetector.py
+    ³   ³   ³   
+    ³   ³   ÀÄÄÄ__pycache__
+    ³   ³           ERPDataExtractor.cpython-310.pyc
+    ³   ³           PostgreSQLInventoryRepository.cpython-310.pyc
+    ³   ³           PostgreSQLSyncLogRepository.cpython-310.pyc
+    ³   ³           ShopifyInventoryUpdater.cpython-310.pyc
+    ³   ³           SmartChangeDetector.cpython-310.pyc
+    ³   ³           
+    ³   ÃÄÄÄpresentation
+    ³   ³   ³   main.py
+    ³   ³   ³   
+    ³   ³   ÀÄÄÄ__pycache__
+    ³   ³           main.cpython-310.pyc
+    ³   ³           
+    ³   ÀÄÄÄshared
+    ³       ³   __init__.py
+    ³       ³   
+    ³       ÃÄÄÄconfig
+    ³       ³       config_manager.py
+    ³       ³       __init__.py
+    ³       ³       
+    ³       ÀÄÄÄlogging
+    ³               logging_setup.py
+    ³               __init__.py
+    ³               
+    ÃÄÄÄtests
+                

@@ -1,13 +1,13 @@
 -- Tabla principal de productos Shopify
 CREATE TABLE "shopify_product" (
   "pos_sku" VARCHAR(30) PRIMARY KEY,
-  "title" VARCHAR(100) NOT NULL,
+  "title" VARCHAR(200) NOT NULL,
   "description" TEXT,
   "price" FLOAT,
   "price_compare" FLOAT,
   "category" VARCHAR(50),
   "sync_op" VARCHAR(20) DEFAULT 'CREATE',
-  "shopify_product_gid" VARCHAR(100) UNIQUE,
+  "shopify_product_gid" VARCHAR(100) ,
   "shopify_variant_gid" VARCHAR(100) UNIQUE,
   "shopify_inventory_item_gid" VARCHAR(100) UNIQUE,
   "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -43,7 +43,7 @@ CREATE TABLE "shopify_inventory_level" (
   "pos_sku" VARCHAR(30) NOT NULL,
   "id_location" INTEGER NOT NULL,
   "shopify_inventory_level_gid" VARCHAR(100) UNIQUE,
-  "quantities_available" FLOAT NOT NULL DEFAULT 0 CHECK (quantities_available >= 0),
+  "quantities_available" FLOAT NOT NULL DEFAULT 0,
   "updated_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT "fk_shopify_inventory_level_pos_sku"
     FOREIGN KEY ("pos_sku")
