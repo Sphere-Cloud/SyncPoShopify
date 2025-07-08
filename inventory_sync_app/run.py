@@ -59,7 +59,7 @@ if __name__ == "__main__":
         {'hour': 9, 'minute': 30},   # 9:30 AM
         {'hour': 13, 'minute': 0},   # 1:00 PM
         {'hour': 16, 'minute': 30},  # 4:30 PM
-        {'hour': 19, 'minute': 30}   # 7:30 PM
+        {'hour': 19, 'minute': 45}   # 7:30 PM
     ]
     
     # Agregar un job para cada horario
